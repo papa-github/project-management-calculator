@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
 import '../styles/critical-path.css';
+import 'reactflow/dist/style.css';
+import { useState, useCallback, useEffect } from 'react';
+import ReactFlow, { Controls, Background,applyEdgeChanges, applyNodeChanges, NodeChange, EdgeChange, addEdge, Handle, Position, Connection, Edge, useNodesState, useEdgesState } from 'reactflow';
 
 /*
 How critical path analysis works:
@@ -20,7 +22,7 @@ How critical path analysis works:
 interface Activity {
     parents: Activity[]; // Empty for start activity, at least one for all other activities
     children: Activity[]; // Empty for finish activity, at least one for all other activities
-    label: string;
+    activityLabel: string;
     duration: number;
     earliestStart?: number; //To be filled in with calculate button
     latestStart?: number; //To be filled in with calculate button
@@ -33,7 +35,7 @@ interface Activity {
 const startActivity: Activity = {
     parents: [],
     children: [],
-    label: "Start",
+    activityLabel: "Start",
     duration: 0,
     earliestStart: 0,
     latestStart: 0,
@@ -43,74 +45,72 @@ const startActivity: Activity = {
 const finishActivity = {
     parents: [startActivity],
     children: [],
-    label: "Finish",
+    activityLabel: "Finish",
     duration: 0,
     float: 0
 }
 
 startActivity.children.push(finishActivity)
 
-class ActivityNode {
-    activity: Activity;
-    selected: boolean;
-    constructor(activity: Activity){
-        this.activity = activity;
-        this.selected = false;
-    }
+function activityNode({data}: {data: Activity}) {
 
-    toggleSelected(){
-        this.selected = !this.selected;
-    }
-
-    isSelected(){
-        return this.selected;
-    }
-
-    display(){
-        return (
-            <div className="activity-node">
-                <div className="activity-attributes">
-                    <div className="est-attribute">EST: {this.activity.earliestStart}</div>
-                    <div className="lst-attribute">LST: {this.activity.latestStart}</div>
-                </div>
-                <div className="activity-name">{this.activity.label}</div>
-                <div className="activity-details">
-                    <div className="duration-attribute">Duration: {this.activity.duration}</div>
-                    <div className="float-attribute">Float: {this.activity.float}</div>
-                </div>
+    return (
+        <div className="activity-node">
+            <div className="activity-attributes">
+                <div className="est-attribute">EST: {data.earliestStart}</div>
+                <div className="lst-attribute">LST: {data.latestStart}</div>
             </div>
-        )
-    }
+            <div className="activity-name">{data.activityLabel}</div>
+            <div className="activity-details">
+                <div className="duration-attribute">Duration: {data.duration}</div>
+                <div className="float-attribute">Float: {data.float}</div>
+            </div>
+            <Handle type="source" position={Position.Right} />
+        </div>
+    )
 }
+
+const nodeTypes = { ActivityNode: activityNode }
+
+const initialNodes = [
+    {
+      id: '1',
+      type: 'ActivityNode',
+      position: { x: 0, y: 0 },
+      data: {...startActivity},
+    },
+    {
+      id: '2',
+      position: { x: 100, y: 100 },
+      data: { label: 'World' },
+    },
+];
+
+const initialEdges = [{ id: '1-2', source: '1', target: '2' }];
 
 
 
 export default function CriticalPathAnalysis(){
-    const [startNode, setStartNode] = useState<ActivityNode>(new ActivityNode(startActivity))
+    const [nodes, setNodes, onNodesChange] = useNodesState([]);
+    const [edges, setEdges, onEdgesChange] = useEdgesState([]);
+    
+    useEffect(() => {
+        setNodes([
+            {
+              id: '1',
+              type: 'ActivityNode',
+              data: { ...startActivity },
+              position: { x: 0, y: 50 },
+            }
+        ])
 
-    // I want an arrow connecting a parent node to a child node
-    function showDiagram(){
-        return (
-            showNode(startNode)
-        )
-    }
-
-    // This function will show a node, then show its children
-    function showNode(node:ActivityNode){
-        return (
-            <div className='node-container'>
-                <div className='node'>{node.display()}</div>
-                {node.activity.children.map((child,index) => {
-                    return (
-                        <div className='children' key={index}>
-                            {showNode(new ActivityNode(child))}
-                        </div>
-                    )
-                    
-                })}
-            </div>
-        )
-    }
+    }, [])
+    
+ 
+      const onConnect = useCallback(
+        (connection: Edge | Connection) => setEdges((eds) => addEdge(connection, eds)),
+        [setEdges]
+      );
 
 
     return(
@@ -131,7 +131,17 @@ export default function CriticalPathAnalysis(){
                 <button className='add-button'>Add activity</button>
             </div>
             <div className="network-diagram">
-                {showDiagram()}
+            <ReactFlow
+                nodeTypes={nodeTypes}
+                nodes={nodes}
+                onNodesChange={onNodesChange}
+                edges={edges}
+                onEdgesChange={onEdgesChange}
+                onConnect={onConnect}
+            >
+                <Background color='#6b6b87' style={{ backgroundColor: '#d5d5de' }}/>
+                <Controls />
+            </ReactFlow>
             </div>
         </div>
     )
