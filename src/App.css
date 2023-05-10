@@ -36,3 +36,30 @@
     transform: rotate(360deg);
   }
 }
+
+.footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: #282c34;
+  color: white;
+  text-align: center;
+}
+
+
+/* Element above footer to stop footer covering content */
+.element-above-footer {
+  margin-bottom: 80px;
+}
+
+
+
+.em{
+  margin: 5px;
+}
+
+
+
+@media (max-width: 1023px) {
+}

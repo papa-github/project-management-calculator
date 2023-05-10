@@ -1,0 +1,36 @@
+.header {
+    display: flex;
+    justify-content: center;
+    background-color: #24252a;
+}
+
+.headerlink-title {
+    color: #edf0f1;
+    margin-left: 20px;
+    margin-bottom: 5px;
+    padding: 10px;
+    text-decoration: none;
+    border-radius: 50px;
+    transition: all 0.3s ease 0s;
+}
+
+.headerlink-title:hover{
+    background-color: rgba(0, 136, 169, 1);
+}
+
+
+
+.headerlink-no-link {
+    background-color: rgba(0, 136, 169, 1);
+}
+
+@media only screen and (max-width: 600px) {
+    .header {
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .headerlink-title {
+      margin: 0.5rem 0;
+    }
+}
