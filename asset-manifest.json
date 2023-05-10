@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/project-management-calculator/static/css/main.073c9b0a.css",
+    "main.js": "/project-management-calculator/static/js/main.5d92e9b7.js",
+    "static/js/787.d1adda40.chunk.js": "/project-management-calculator/static/js/787.d1adda40.chunk.js",
+    "static/media/logo.svg": "/project-management-calculator/static/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
+    "index.html": "/project-management-calculator/index.html",
+    "main.073c9b0a.css.map": "/project-management-calculator/static/css/main.073c9b0a.css.map",
+    "main.5d92e9b7.js.map": "/project-management-calculator/static/js/main.5d92e9b7.js.map",
+    "787.d1adda40.chunk.js.map": "/project-management-calculator/static/js/787.d1adda40.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.073c9b0a.css",
+    "static/js/main.5d92e9b7.js"
+  ]
+}
