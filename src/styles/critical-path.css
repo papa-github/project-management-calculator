@@ -1,4 +1,4 @@
-.activity-node , .editable-activity-node{
+.activity-node , .editable-activity-node, .activity-node-highlighted{
     border: 1px solid black;
     border-radius: 5px;
     padding: 10px;
@@ -8,7 +8,10 @@
     background-color: white;
     box-shadow: 0px 2px 2px 0px rgba(0,0,0,0.2);
     overflow: scroll;
-  }
+}
+.activity-node-highlighted{
+  background-color: #ffcccb;
+}
   
   .activity-attributes {
     display: flex;
@@ -73,6 +76,25 @@ input{
     flex: 0 0 auto;
 
   }
+
+.network-diagram{
+    margin-top: 20px;
+    height: 400px;
+    width: 100vw;
+}
+
+/* Debug activities will be placed side by side */
+.debug-activities {
+    display: flex;
+    flex-direction: row;
+}
+
+.debug-activity{
+    margin: 20px;
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 10px;
+}
 
 
   
